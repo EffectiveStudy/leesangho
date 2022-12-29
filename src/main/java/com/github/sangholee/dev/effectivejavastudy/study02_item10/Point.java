@@ -30,4 +30,11 @@ public class Point {
 //        Point p = (Point) o;
 //        return p.x == x && p.y == y;
 //    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 }
