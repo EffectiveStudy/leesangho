@@ -12,14 +12,28 @@ class Item34Test {
     @Test
     @DisplayName("열거타입과 정수열거 패턴의 차이 - 1 비교")
     void int_constant_deference1() {
-        assertNotSame(Constant.APPLE_PIPPIN, Constant.APPLE_GRANNY_SMITH);
-        assertNotSame(Apple.PIPPIN, Apple.FUJI);
 
+        // Constant.APPLE_PIPPIN == Constant.APPLE_PIPPIN
         assertSame(Constant.APPLE_PIPPIN, Constant.APPLE_PIPPIN);
+
+        // Apple.PIPPIN == Apple.PIPPIN
         assertSame(Apple.PIPPIN, Apple.PIPPIN);
 
-        // 비교가 가능하다
+        // Constant.APPLE_PIPPIN != Constant.APPLE_GRANNY_SMITH
+        assertNotSame(Constant.APPLE_PIPPIN, Constant.APPLE_GRANNY_SMITH);
+
+        // Apple.PIPPIN != Apple.FUJI
+        assertNotSame(Apple.PIPPIN, Apple.FUJI);
+
+        // Constant.APPLE_PIPPIN == Constant.ORANGE_TEMPLATE ??
+        // 비교가 가능하며 심지어 같음
         assertSame(Constant.APPLE_PIPPIN, Constant.ORANGE_TEMPLATE);
+        final boolean isSame = Constant.APPLE_PIPPIN == Constant.ORANGE_TEMPLATE;
+        assertTrue(isSame);
+
+        // Apple.PIPPIN != Orange.TEMPLE
+        // 비교하여도 당연히 값이 다름
+        assertNotSame(Apple.PIPPIN, Orange.TEMPLE);
 
         // 애초에 컴파일 오류
 //        boolean isCompareAppleAndOrangeByEnum = Apple.PIPPIN == Orange.TEMPLE;
@@ -47,16 +61,17 @@ class Item34Test {
         assertThrows(AssertionError.class, () -> ConstantAdapter.printApple(100));
 
         // 애초에 컴파일 오류로 넣을수가 없음
+        // not null 이라면 언제나 안정적으로 타입이 전달됨
 //        assertThrows(AssertionError.class ,() -> ConstantAdapter.printApple(Apple.100));
     }
 
     @Test
     @DisplayName("열거타입으로 상수와 데이터를 연결하고 싶을때")
     void enum_data_method() {
-        // 전체 행성에서 무게를 출력하고 싶다면
-
+        // 지구 무게가 185 kgf(?) 의 질량
         double mass = 185.0 / Planet.EARTH.surfaceGravity();
 
+        // 전체 행성에서 무게를 출력하고 싶다면
         Arrays.stream(Planet.values())
                 .forEach(planet -> System.out.printf("%s 에서의 무게는 %f 이다%n", planet,
                         planet.surfaceWeight(mass)));
@@ -78,7 +93,7 @@ class Item34Test {
                 .forEach(operation -> System.out.printf("%f %s %f = %f%n", x, operation, y,
                         operation.apply(x, y)));
 
-        // 문자열을 열거타입을 변현화는 메소드를 제공 가능
+        // 문자열을 열거타입으로 변환화는 메소드를 제공 가능
         Double timesResult = Operation.fromString("*")
                 .map(operation -> operation.apply(x, y))
                 .orElseThrow();
