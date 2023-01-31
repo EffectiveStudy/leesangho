@@ -2,7 +2,7 @@
 
 ---
 
-열거 타입이 없던 `Java 1.5` 이전에는 정수 열거 패턴의 int 상수를 많이 사용하였다.
+열거 타입이 없던 `Java 1.5` 이전에는 정수 열거 패턴의 int 상수를 많이 사용 했음
 
 ---
 
@@ -125,30 +125,121 @@ public enum Operation {
 }
 ```
 
-단점 으로 상수끼리 공유가 안됨
+일반적으로
 
-[열거 타입의 명세](https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.9.3)
+클래스 로드 시점
 
----
+* 클래스의 인스턴스 생성
+* 클래스의 정적 메소드 호출
+* 클래스의 정적 변수 할당
+* 클래스의 정적 변수 사용 (final x)
 
-전략적 열거 타입 패턴
+인스턴스 초기화 순서
 
-상수별 메소드 구현 방식의 단점을 전략 패턴을 적용하여 해결가능
+1. 정적 블록
+2. 정적 변수
+3. 생성자
 
-[전략 패턴](https://ko.wikipedia.org/wiki/전략_패턴)
+열거타입의 경우
 
-> 전략 패턴이란?
-> 
-> 실행 중에 알고리즘을 선택할 수 있게 하는 행위 소프트웨어 디자인 패턴
->
-> 전략은 알고리즘을 사용하는 클라이언트와는 독립적으로 다양하게 만든다
-> 
-> * 특정한 계열의 알고리즘들을 정의하고
-> * 각 알고리즘을 캡슐화하며 
-> * 이 알고리즘들을 해당 계열 안에서 상호 교체가 가능하게 만든다.
+클래스 로드 시점에 JVM Method 영역에 할당되며 heap 영역에 인스턴화 됨
+
+=> item 3 에 싱글톤 설명에서 잠시 나옴
+
+명세서에서는 암시적인 필드가 초기화 될때 생성된다고 함
+
+> 결론적으로 인스턴스 생성이 먼저고 정적 변수 초기화는 나중에 이루어짐 
 
 
-switch 문으로 작성한 경우
+[열거 타입의 변수의 명세](https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.9.3)
+
+또 다른 예시
+
+주중의 일당을 주는 계산식
+
+```java
+public enum PayrollDay {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY;
+
+    private static final int MINS_PER_SHIFT = 8 * 60;
+
+    int pay(int minutesWorked, int payRate) {
+        int basePay = minutesWorked * payRate;
+
+        int overtimePay = minutesWorked <= MINS_PER_SHIFT
+                ? 0
+                : (minutesWorked - MINS_PER_SHIFT) * payRate / 2;
+
+        return basePay + overtimePay;
+    }
+
+}
+```
+
+위 열거타입은 아주 적절하게 추상화 되었음
+
+하지만 주말에 일당을 주는 경우가 생김
+
+상수별 메소드 구현 방식으로 수정
+
+```java
+public enum PayrollDayMethodImpl {
+  MONDAY {
+    @Override
+    int pay(int minutesWorked, int payRate) {
+      int basePay = minutesWorked * payRate;
+
+      int overtimePay = minutesWorked <= MINS_PER_SHIFT
+              ? 0
+              : (minutesWorked - MINS_PER_SHIFT) * payRate / 2;
+
+      return basePay + overtimePay;
+    }
+  },
+  TUESDAY {
+    @Override
+    int pay(int minutesWorked, int payRate) {
+      int basePay = minutesWorked * payRate;
+
+      int overtimePay = minutesWorked <= MINS_PER_SHIFT
+              ? 0
+              : (minutesWorked - MINS_PER_SHIFT) * payRate / 2;
+
+      return basePay + overtimePay;
+    }
+  },
+  ... 생략
+  SATURDAY {
+    @Override
+    int pay(int minutesWorked, int payRate) {
+      int basePay = minutesWorked * payRate;
+
+      int overtimePay = basePay / 2;
+
+      return basePay + overtimePay;
+    }
+  },
+  SUNDAY {
+    @Override
+    int pay(int minutesWorked, int payRate) {
+      int basePay = minutesWorked * payRate;
+
+      int overtimePay = basePay / 2;
+
+      return basePay + overtimePay;
+    }
+  };
+
+  private static final int MINS_PER_SHIFT = 8 * 60;
+
+  abstract int pay(int minutesWorked, int payRate);
+}
+```
+
+해당 예시인 메소드 구현의 단점으로는 상수끼리 코드 공유가 안됨 => 너무 많은 중복
+
+코드 공유를 위해 switch 문을 통해 수정
+
 ```java
 public enum PayrollDaySwitch {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -170,6 +261,27 @@ public enum PayrollDaySwitch {
 
 }
 ```
+
+하지만 열거타입에 새로운 값이 추가되면 이슈가 발생 할 수 있음
+
+---
+
+전략적 열거 타입 패턴
+
+상수별 메소드 구현 방식의 단점을 전략 패턴을 적용하여 해결가능
+
+[전략 패턴](https://ko.wikipedia.org/wiki/전략_패턴)
+
+> 전략 패턴이란?
+> 
+> 실행 중에 알고리즘을 선택할 수 있게 하는 행위 소프트웨어 디자인 패턴
+>
+> 전략은 알고리즘을 사용하는 클라이언트와는 독립적으로 다양하게 만든다
+> 
+> * 특정한 계열의 알고리즘들을 정의하고
+> * 각 알고리즘을 캡슐화하며 
+> * 이 알고리즘들을 해당 계열 안에서 상호 교체가 가능하게 만든다.
+
 
 전략패턴을 적용한 경우
 ```java
@@ -211,12 +323,14 @@ public enum PayrollDay {
 }
 ```
 
-switch 문은 열거타입의 상수별 동작을 구현하는데 적합하지 않음
+switch 문은 열거타입의 상수별 동작을 구현하는데 적합하지 않음 => ocp 를 어길 가능성 있음
 
 하지만 switch 문을 쓰기 적절한 때 
 * 기존 열거 타입에 상수별 동작을 혼합할때 
 * 추가하려는 메소드가 의미상 열거 타입에 속하지 않을때
 * 종종 쓰이지만 열거타입안에 포함될 만큼 유용하지 않을때
+
+> switch 문으로 충분하면 사용하자
 
 ```java
 public class OperationAdaptor {
@@ -232,7 +346,6 @@ public class OperationAdaptor {
   }
 }
 ```
-
 
 ---
 
@@ -255,6 +368,10 @@ public class OperationAdaptor {
 [쟈미의 devlog - [Effective Java] item 34. int 상수 대신 열거 타입을 사용하라](https://jyami.tistory.com/102)
 
 [5.열거 타입과 애너테이션](https://catsbi.oopy.io/4678b976-bd7e-4353-b4f0-04c06f66df03)
+
+[클래스는 언제 로딩되고 초기화되는가? (feat. 싱글톤)](https://velog.io/@skyepodium/클래스는-언제-로딩되고-초기화되는가)
+
+[Java Enum이란](https://honbabzone.com/java/java-enum/)
 
 [열거 타입의 명세](https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.9.3)
 
