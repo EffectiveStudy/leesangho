@@ -88,7 +88,7 @@ execution(* get*(*)) : 이름이 get으로 시작하고 1개의 파라미터를 
 에너테이션을 이용하는것이 좋지 않을까?
 
 ```java
-nnotation(MyTest)
+@annotation(MyTest)
 ```
 
 ---
