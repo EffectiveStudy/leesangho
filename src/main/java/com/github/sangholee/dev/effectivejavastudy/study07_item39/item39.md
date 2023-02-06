@@ -31,6 +31,8 @@ junit 3 최초 릴리즈 날짜를 찾지 못함
 
 대신 필수 jdk 버전이 1.2+ 따라서 애너테이션이 나온 1.5 버전 이전에 릴리즈 되었을 가능성이 높음
 
+[stackoverflow - Which version of JUnit is compatible with JDK 1.3?](https://stackoverflow.com/questions/19244678/which-version-of-junit-is-compatible-with-jdk-1-3)
+
 [자바 버전 릴리즈 위키](https://en.wikipedia.org/wiki/Java_version_history)
 
 junit4 는 애너테이션 기반으로 수정됨
@@ -98,6 +100,8 @@ execution(* get*(*)) : 이름이 get으로 시작하고 1개의 파라미터를 
 [위키백과](https://ko.wikipedia.org/wiki/JUnit) 
 
 [JUnit 창시자 Kent Beck이 소개하는 private method 테스트](https://okky.kr/articles/860464)
+
+[Which version of JUnit is compatible with JDK 1.3?](https://stackoverflow.com/questions/19244678/which-version-of-junit-is-compatible-with-jdk-1-3)
 
 [Java Annotation이란?](https://nesoy.github.io/articles/2018-04/Java-Annotation)
 
