@@ -4,6 +4,8 @@
 
 C 와 같은 언어 중에서는 지역변수를 코드 블록 첫 머리에 선언하는 경우가 많음
 
+자바에서도 이 방식을 따른 경우가 있음
+
 ```java
 public static void main(String[] args) {
     int rectangleWidth = 10;
@@ -19,8 +21,6 @@ public static void main(String[] args) {
     Rhombus rhombus = new Rhombus(rhombusWidth, rhombusHeight);
 }
 ```
-
-자바에서도 이 방식을 따른 경우가 있음
 
 지역 변수의 범위를 줄이는 가장 좋은 방법은 `처음 쓰일때 선언하기`
 
@@ -73,6 +73,8 @@ for(Iterator<Element> i = c.iterator(); i.hasNext();) {
 
 반복변수의 값을 반복문 종료후에도 사용해야한다면 `while` 문보다 `for` 문 사용
 
+`while` 문 을 사용할 때 발생할 수 있는 예시
+
 ```java
 Iterator<Element> i = c.iterator();
 while(i.hasNext()) {
@@ -86,9 +88,7 @@ while(i.hasNext()) { // 복붙으로 인한 오류
 }
 ```
 
-`for` 문의 경우는 컴파일 오류로 알려줌
-
-변수의 유효 범위가 `for` 문 범위와 일치하여 같은 이름의 변수를 사용하더라도 영향을 주지 않음
+`for` 문 으로 수정한 예시
 
 ```java
 for(Iterator<Element> i = c.iterator(); i.hasNext();) {
@@ -99,6 +99,10 @@ for(Iterator<Element> i2 = c2.iterator(); i.hasNext();) {
     Element e2 = i2.next();
 } 
 ```
+
+`for` 문의 경우는 컴파일 오류로 알려줌
+
+변수의 유효 범위가 `for` 문 범위와 일치하여 같은 이름의 변수를 사용하더라도 영향을 주지 않음
 
 또한 `while` 문 보다 짧아 가독성이 더 나음
 
@@ -124,13 +128,13 @@ for (int i = 0, n = expensiveComputation(); i < n; i++) {
 > 지역변수 범위를 최소화 하려면
 > 
 > 1. 변수가 처음 쓰일 때 선언
-> 2. 변수 선어시 초기화
+> 2. 변수 선언시 초기화 필요
 > 3. 메서드를 가능한 작게 유지, 한가지 기능에 집중
 
 ---
 
 ### 발표자의 생각
 
-핵심은 메서드를 작게 유지 하고 한가지 기능만 집중하게 핟다면
+핵심은 메서드를 작게 유지 하고 한가지 기능만 집중하게 한다면
 
 지역변수 선언을 생각보다 줄일 수 있으며 지역변수 갯수가 줄어들면 범위도 최소화가 쉬울 것
