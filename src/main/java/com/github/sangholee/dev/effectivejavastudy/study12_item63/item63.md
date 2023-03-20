@@ -62,7 +62,7 @@ jdk 5 버전 이상 부터는 문자열 연산자를 사용해서 코드를 작�
 
 ### java 8 과 java 11 에서 성능 차이?
 
-java11 에서 `makeConcatWithConstants` 를 통해 획기적으로 개선함
+java9 에서 `makeConcatWithConstants` 를 통해 획기적으로 개선함
 
 
 ### 다른 방식의 문자열 연산
