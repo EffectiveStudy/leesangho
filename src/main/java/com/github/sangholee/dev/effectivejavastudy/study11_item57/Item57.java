@@ -38,8 +38,8 @@ public class Item57 {
             Element e = i.next();
         }
 
-        for(Iterator<Element> i2 = c2.iterator(); i.hasNext();) {
-            Element e2 = i2.next();
-        }
+//        for(Iterator<Element> i2 = c2.iterator(); i.hasNext();) {
+//            Element e2 = i2.next();
+//        }
     }
 }
