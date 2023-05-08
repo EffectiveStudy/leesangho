@@ -13,7 +13,7 @@ public class Synchronizer {
         for (int i = 0; i < concurrency; i++) {
             executor.execute(() -> {
                 // 타이머에게 준비됨을 알림
-                ready.countDown();;
+                ready.countDown();
 
                 try {
                     // 모든 작업자 스레드가 준비될 때까지 대기
