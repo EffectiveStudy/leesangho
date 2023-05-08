@@ -15,7 +15,7 @@ public class Period implements Serializable {
         this.start = new Date(start.getTime());
         this.end = new Date(end.getTime());
         if (this.start.compareTo(this.end) > 0) {
-            throw new IllegalArgumentException(start + "after " + end);
+            throw new IllegalArgumentException(start + " after " + end);
         }
     }
 
