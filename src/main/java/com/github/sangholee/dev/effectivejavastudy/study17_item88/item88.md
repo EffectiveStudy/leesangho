@@ -14,7 +14,7 @@ public class Period {
         this.start = new Date(start.getTime());
         this.end = new Date(end.getTime());
         if (this.start.compareTo(this.end) > 0) {
-            throw new IllegalArgumentException(start + "after " + end);
+            throw new IllegalArgumentException(start + " after " + end);
         }
     }
 
@@ -143,7 +143,7 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
 
 > `readObject` 메서드는 마치 public 생성자 처럼 작성
 > 
-> `readObject 는 어떤 바이트 스트릠이던 유효한 인스턴스를 만들어야 함
+> `readObject` 는 어떤 바이트 스트릠이던 유효한 인스턴스를 만들어야 함
 > 진짜 직렬화된 인스턴스만 넘어온다고 생각하면 안됨
 > 
 > 안전한 `readObject` 메서드 작성 지침
