@@ -133,9 +133,9 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
 
 ### 기본 `readObject` 메서드를 써도 좋은 경우
 
-`transient` 필드를 제외한 모든 필드 값을 매개변수로 받아 유효성 겂아 없이 필드에 대입하는 `public 생성자를` 추가해도 된다면 O
+`transient` 필드를 제외한 모든 필드 값을 매개변수로 받아 유효성 검사 없이 필드에 대입하는 `public 생성자` 를 추가해도 된다면 O
 
-그게 아니라면 `커스텀 readObject` 메서드 혹은`직렬화 프록시 패턴`(item90) 사용
+그게 아니라면 `커스텀 readObject` 메서드 혹은 `직렬화 프록시 패턴` (item90) 사용
 
 ---
 
@@ -143,7 +143,8 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
 
 > `readObject` 메서드는 마치 public 생성자 처럼 작성
 > 
-> `readObject` 는 어떤 바이트 스트릠이던 유효한 인스턴스를 만들어야 함
+> `readObject` 는 어떤 바이트 스트림이던 유효한 인스턴스를 만들어야 함
+>
 > 진짜 직렬화된 인스턴스만 넘어온다고 생각하면 안됨
 > 
 > 안전한 `readObject` 메서드 작성 지침
